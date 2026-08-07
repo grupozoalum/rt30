@@ -274,31 +274,70 @@ section { padding: 96px 48px; }
   margin-top: 16px;
 }
 
-.nos-photo-stack {
-  position: relative; height: 520px;
+.nos-visual { position: relative; }
+.nos-img-frame {
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  overflow: hidden;
 }
-.nos-photo-main {
-  position: absolute; top: 0; left: 0; right: 40px; bottom: 60px;
-  background-image: url('https://digitalreportmx.com/wp-content/uploads/2025/07/IMG_5551-1024x683.jpg');
-  background-size: cover; background-position: center;
-  filter: saturate(0.7);
+.nos-img-frame::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(1,45,90,0.35) 0%, transparent 60%);
+  pointer-events: none;
 }
-.nos-photo-accent {
-  position: absolute; bottom: 0; right: 0;
-  width: 55%; height: 55%;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Mexibus_passing_through_Ojo_de_Agua.jpg/1280px-Mexibus_passing_through_Ojo_de_Agua.jpg');
-  background-size: cover; background-position: center;
-  border: 6px solid var(--gris10);
-  filter: saturate(0.7);
+.nos-main-img {
+  width: 100%; aspect-ratio: 4/3;
+  object-fit: cover;
+  filter: saturate(0.75) contrast(1.05);
+  display: block;
+}
+.nos-accent-card {
+  position: absolute; bottom: -28px; right: -28px;
+  width: 52%;
+  border: 5px solid var(--gris10);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  overflow: hidden;
+}
+.nos-accent-card img {
+  width: 100%; aspect-ratio: 4/3;
+  object-fit: cover; display: block;
+  filter: saturate(0.65);
+}
+.nos-stats-bar {
+  position: absolute; left: 0; right: 28px; bottom: -28px;
+  display: flex; background: var(--azul2);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+.nos-stat {
+  flex: 1; padding: 14px 20px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.nos-stat:last-child { border-right: none; }
+.nos-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; color: var(--amarillo);
+  line-height: 1; display: block;
+}
+.nos-stat-lbl {
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
 }
 .nos-year-badge {
-  position: absolute; top: 20px; left: 20px; z-index: 2;
+  position: absolute; top: -18px; left: 24px; z-index: 10;
   background: var(--amarillo);
-  padding: 14px 20px;
+  padding: 14px 22px;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem; letter-spacing: 0.1em;
-  color: var(--azul2); line-height: 1.2;
+  font-size: 1rem; letter-spacing: 0.08em; line-height: 1.25;
+  color: var(--azul2);
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.nos-deco-num {
+  position: absolute; right: 0; top: -24px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 160px; line-height: 1;
+  color: rgba(2,62,126,0.045);
+  user-select: none; pointer-events: none;
 }
 
 .nos-text p {
@@ -499,13 +538,24 @@ section { padding: 96px 48px; }
 }
 
 .term-icon-wrap {
-  width: 48px; height: 48px;
-  background: var(--azul2);
-  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  clip-path: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   margin-bottom: 16px;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  width: 55px; 
+  height: 55px;
 }
-.term-icon-wrap span { font-size: 1.3rem; }
+.term-icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.term-card:hover .term-icon-wrap img {
+  transform: scale(1.08);
+}
 
 .term-card h4 {
   font-family: 'Barlow Condensed', sans-serif;
@@ -516,16 +566,78 @@ section { padding: 96px 48px; }
 .term-card small {
   font-size: 0.78rem; color: var(--gris60);
 }
-.term-rosa-tag {
+.term-map-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: 0.7rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--azul); text-decoration: none;
+  border-bottom: 1px solid rgba(2,62,126,0.2);
+  padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+.term-map-link:hover { color: var(--amarilloDark); border-color: var(--amarilloDark); }
+.term-map-link::before {
+  content: '';
   display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--azul);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.term-map-link:hover::before { background: var(--amarilloDark); }
+.term-rosa-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-top: 8px;
   font-size: 0.68rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: #d63384;
-  padding: 3px 8px;
+  padding: 4px 10px;
   background: rgba(214,51,132,0.08);
   border: 1px solid rgba(214,51,132,0.25);
 }
+.term-rosa-tag::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #d63384;
+  flex-shrink: 0;
+}
+.term-map-wrap {
+  margin-top: 48px; margin-bottom: 0;
+  position: relative;
+}
+.term-map-wrap iframe {
+  width: 100%; height: 340px;
+  display: block; border: none;
+  filter: grayscale(20%) contrast(1.05);
+}
+.term-map-label {
+  position: absolute; top: 16px; left: 16px;
+  background: var(--azul2);
+  padding: 8px 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 0.75rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--amarillo);
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.term-map-cta {
+  position: absolute; bottom: 16px; right: 16px;
+  background: var(--amarillo); color: var(--azul2);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 0.75rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 16px; text-decoration: none;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  transition: background .2s;
+}
+.term-map-cta:hover { background: var(--amarilloDark); }
 
 /* ─── OBJETIVOS ───────────────────────── */
 #objetivos {
@@ -852,9 +964,13 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
   .stat-block { flex: 1 1 50%; border-right: none; border-bottom: 1px solid rgba(252,176,49,0.15); }
   
   .nos-grid, .bolsa-grid { grid-template-columns: 1fr; gap: 40px; }
-  .nos-photo-stack { height: 400px; }
+  .nos-visual { padding-bottom: 70px !important; padding-right: 0 !important; }
+.nos-accent-card { right: 0; }
+.nos-stats-bar { right: 0; }
   
   .dif-layout, .term-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+.term-map-wrap iframe { height: 260px; }
+
   .obj-grid { grid-template-columns: 1fr; gap: 16px; }
   .fotos-strip { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .foto-item.tall { grid-row: auto; }
@@ -876,12 +992,13 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
   .stat-block { padding: 16px; }
   
   /* Ajustes de fotos en la sección "Nosotros" para celulares */
-  .nos-photo-stack { height: 280px; }
-  .nos-photo-main { right: 20px; bottom: 30px; }
-  .nos-photo-accent { width: 60%; height: 60%; }
+  .nos-accent-card { width: 48%; right: 0; bottom: -20px; }
+  .nos-stats-bar { right: 0; bottom: -20px; }
   
   /* Las cuadrículas bajan a 1 sola columna */
   .dif-layout, .term-grid { grid-template-columns: 1fr; }
+.term-map-wrap iframe { height: 220px; }
+.term-map-label, .term-map-cta { font-size: 0.68rem; padding: 6px 12px; }
   .fotos-strip { grid-template-columns: 1fr; }
   .obj-card { flex-direction: column; gap: 12px; }
   
@@ -909,7 +1026,6 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
   </div>
   <ul class="nav-links">
     <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#diferencias">Servicios</a></li>
     <li><a href="#terminales">Terminales</a></li>
     <li><a href="#objetivos">Objetivos</a></li>
     <li><a href="#bolsa" class="nav-cta">Únete</a></li>
@@ -943,7 +1059,7 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
     <span class="hero-title-sub">al Estado de México</span>
 
     <div class="hero-actions">
-      <a href="#nosotros" class="btn-prime">
+      <a href="#terminales" class="btn-prime">
         <span>🚌</span> Conoce la ruta
       </a>
       <a href="#bolsa" class="btn-sec">
@@ -981,14 +1097,32 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
 <section id="nosotros">
   <div class="container">
     <div class="nos-grid">
-      <!-- Fotos apiladas -->
-      <div class="nos-photo-stack">
-        <div class="nos-photo-main"></div>
-        <div class="nos-photo-accent"></div>
+      <!-- Visual apilado -->
+      <div class="nos-visual" style="padding-bottom:60px; padding-right:28px;">
         <div class="nos-year-badge">Fundados<br>en 1981</div>
+        <div class="nos-img-frame">
+          <img class="nos-main-img"
+            src="https://digitalreportmx.com/wp-content/uploads/2025/07/IMG_5551-1024x683.jpg"
+            alt="Flota Metropolitanos Ruta 30">
+        </div>
+        <div class="nos-stats-bar">
+          <div class="nos-stat">
+            <span class="nos-stat-num">44+</span>
+            <span class="nos-stat-lbl">Años operando</span>
+          </div>
+          <div class="nos-stat">
+            <span class="nos-stat-num">9</span>
+            <span class="nos-stat-lbl">Terminales</span>
+          </div>
+          <div class="nos-stat">
+            <span class="nos-stat-num">100%</span>
+            <span class="nos-stat-lbl">Flota asegurada</span>
+          </div>
+        </div>
       </div>
 
       <div class="nos-text">
+        <div class="nos-deco-num">30</div>
         <div class="eyebrow">Quiénes somos</div>
         <h2 class="sec-title" style="color:var(--azul2)">Más de cuatro<br>décadas conectando<br>comunidades</h2>
         <p>Nacidos como "Servicios Colectivos Prados", hemos evolucionado hasta convertirnos en líderes del transporte metropolitano en el Estado de México. Operamos con flota asegurada, operadores certificados y tecnología al servicio del pasajero.</p>
@@ -1020,7 +1154,6 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
     </div>
   </div>
 </section>
-
 
 <!-- ═══════════════ DIFERENCIAS ═══════════════════ -->
 <section id="diferencias">
@@ -1072,6 +1205,7 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
   </div>
 </section>
 
+
 <!-- ═══════════════ TERMINALES ════════════════════ -->
 <section id="terminales">
   <div class="container">
@@ -1080,65 +1214,86 @@ footer p { font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0
     <p style="max-width:540px;font-size:0.97rem;line-height:1.7;color:var(--gris60);margin-bottom:0">
       Estratégicamente ubicadas en el Área Metropolitana para acercarte a tus destinos más importantes.
     </p>
-    <div class="term-grid">
+
+    
+
+    <div class="term-grid" style="margin-top:48px">
       <div class="term-card">
         <div class="term-num">01</div>
-        <div class="term-icon-wrap"><span>🏢</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_prados.svg" alt="Icono Prados">
+        </div>
         <h4>Prados</h4>
         <small>Terminal principal · Tultitlán</small>
-        <div><span class="term-rosa-tag">🌸 Ruta Rosa</span></div>
+        <div><span class="term-rosa-tag">Ruta Rosa disponible</span></div>
       </div>
       <div class="term-card">
         <div class="term-num">02</div>
-        <div class="term-icon-wrap"><span>🌅</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_alborada.svg" alt="Icono Alborada">
+        </div>
         <h4>Alborada</h4>
         <small>Acceso norte</small>
-        <div><span class="term-rosa-tag">🌸 Ruta Rosa</span></div>
+        <div><span class="term-rosa-tag">Ruta Rosa disponible</span></div>
       </div>
       <div class="term-card">
         <div class="term-num">03</div>
-        <div class="term-icon-wrap"><span>🏙️</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_jaltenco.svg" alt="Icono Jaltenco">
+        </div>
         <h4>Jaltenco</h4>
         <small>Enlace a municipio</small>
-        <div><span class="term-rosa-tag">🌸 Ruta Rosa</span></div>
+        <div><span class="term-rosa-tag">Ruta Rosa disponible</span></div>
       </div>
       <div class="term-card">
         <div class="term-num">04</div>
-        <div class="term-icon-wrap"><span>🛒</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_centralabastos.svg" alt="Icono Central de Abastos">
+        </div>
         <h4>Central de Abastos</h4>
         <small>Zona comercial</small>
       </div>
       <div class="term-card">
         <div class="term-num">05</div>
-        <div class="term-icon-wrap"><span>🛤️</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_paseos.svg" alt="Icono Paseos">
+        </div>
         <h4>Paseos</h4>
         <small>Corredor sur</small>
-        <div><span class="term-rosa-tag">🌸 Ruta Rosa</span></div>
+        <div><span class="term-rosa-tag">Ruta Rosa disponible</span></div>
       </div>
       <div class="term-card">
         <div class="term-num">06</div>
-        <div class="term-icon-wrap"><span>🚉</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_mexibus.svg" alt="Icono Mexibus">
+        </div>
         <h4>Mexibus</h4>
         <small>Integración BRT</small>
       </div>
       <div class="term-card">
         <div class="term-num">07</div>
-        <div class="term-icon-wrap"><span>⛪</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_sancristobal.svg" alt="Icono San Cristóbal">
+        </div>
         <h4>San Cristóbal</h4>
         <small>Zona oriente</small>
       </div>
       <div class="term-card">
         <div class="term-num">08</div>
-        <div class="term-icon-wrap"><span>🏬</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_plazacoacalco.svg" alt="Icono Plaza Coacalco">
+        </div>
         <h4>Plaza Coacalco</h4>
         <small>Zona comercial Coacalco</small>
       </div>
       <div class="term-card">
         <div class="term-num">09</div>
-        <div class="term-icon-wrap"><span>🔗</span></div>
+        <div class="term-icon-wrap">
+          <img src="terminal_miv.svg" alt="Icono MIV">
+        </div>
         <h4>MIV</h4>
         <small>Multimodal integrado</small>
-        <div><span class="term-rosa-tag">🌸 Ruta Rosa</span></div>
+        <div><span class="term-rosa-tag">Ruta Rosa disponible</span></div>
       </div>
     </div>
   </div>
